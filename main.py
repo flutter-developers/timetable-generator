@@ -157,6 +157,9 @@ class Timetable:
                     # Section Check
                     if not (g.isdisjoint(mat[d, t][0])):
                         temp_set = g.difference(mat[d, t][0])
+                        if(len(g) == 2):
+                            print("==="+ str(mat[d,t][0])
+                                  +"===")
                         fitness += (len(g) - len(temp_set))
                         mat[d, t][0].update(temp_set)
                     else:
@@ -223,6 +226,8 @@ class Timetable:
                         mat[d, t][0].update(g)
 
                     # Faculty Check
+                    if (len(gene.batch) >= 2):
+                        continue
                     if not (gene.faculty.isdisjoint(mat[d, t][1])):
                         temp_set = gene.faculty.difference(mat[d, t][1])
                         mat[d, t][1].update(temp_set)
@@ -276,7 +281,7 @@ def initiation():
     ll = ['18PC2IT02', 'Java Programming Laboratory', '18PC2CS02', 'Database Management Systems Laboratory',
           '18PC2IT03', 'IT Workshop']
     for _ in range(0, len(l), 2):
-        t = Course(l[_], l[_ + 1], "Lecture", 1, 3)
+        t = Course(l[_], l[_ + 1], "Lecture", 1, 4)
         courselist.append(t)
     for _ in range(0, len(ll), 2):
         t = Course(ll[_], ll[_ + 1], "Lab", 3, 1)
@@ -312,7 +317,7 @@ def initiation():
         batchlist.append(t)
     print(batchlist, len(batchlist))
 
-    data = [Data({batchlist[0]}, {courselist[0]}, {professorlist[24]}, None, 'A103'),
+    data = [Data({batchlist[0],batchlist[1]}, {courselist[0]}, set(), None, ""),
             Data({batchlist[0]}, {courselist[1]}, {professorlist[7]}, None, 'A103'),
             Data({batchlist[0]}, {courselist[2]}, {professorlist[14]}, None, 'A103'),
             Data({batchlist[0]}, {courselist[3]}, {professorlist[16]}, None, 'A103'),
@@ -324,7 +329,7 @@ def initiation():
                  {professorlist[14], professorlist[15], professorlist[21], professorlist[20]}, None, None),
             Data({batchlist[0]}, {courselist[7], courselist[8]},
                  {professorlist[3], professorlist[11], professorlist[21], professorlist[20]}, None, None),
-            Data({batchlist[1]}, {courselist[0]}, {professorlist[24]}, None, 'B414'),
+            #Data({batchlist[1]}, {courselist[0]}, {professorlist[24]}, None, 'B414'),
             Data({batchlist[1]}, {courselist[1]}, {professorlist[13]}, None, 'B414'),
             Data({batchlist[1]}, {courselist[2]}, {professorlist[10]}, None, 'B414'),
             Data({batchlist[1]}, {courselist[3]}, {professorlist[9]}, None, 'B414'),
@@ -336,18 +341,18 @@ def initiation():
                  {professorlist[10], professorlist[25], professorlist[12], professorlist[17]}, None, None),
             Data({batchlist[1]}, {courselist[7], courselist[8]},
                  {professorlist[23], professorlist[8], professorlist[12], professorlist[17]}, None, None),
-            Data({batchlist[2]}, {courselist[0]}, {professorlist[24]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[1]}, {professorlist[7]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[2]}, {professorlist[14]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[3]}, {professorlist[16]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[4]}, {professorlist[4]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[5]}, {professorlist[3]}, None, 'A103'),
-            Data({batchlist[2]}, {courselist[6], courselist[7]},
-                 {professorlist[14], professorlist[15], professorlist[3], professorlist[11]}, None, None),
-            Data({batchlist[2]}, {courselist[6], courselist[8]},
-                 {professorlist[14], professorlist[15], professorlist[21], professorlist[20]}, None, None),
-            Data({batchlist[2]}, {courselist[7], courselist[8]},
-                 {professorlist[3], professorlist[11], professorlist[21], professorlist[20]}, None, None),
+            #Data({batchlist[2]}, {courselist[0]}, {professorlist[24]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[1]}, {professorlist[7]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[2]}, {professorlist[14]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[3]}, {professorlist[16]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[4]}, {professorlist[4]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[5]}, {professorlist[3]}, None, 'A103'),
+            # Data({batchlist[2]}, {courselist[6], courselist[7]},
+            #      {professorlist[14], professorlist[15], professorlist[3], professorlist[11]}, None, None),
+            # Data({batchlist[2]}, {courselist[6], courselist[8]},
+            #      {professorlist[14], professorlist[15], professorlist[21], professorlist[20]}, None, None),
+            # Data({batchlist[2]}, {courselist[7], courselist[8]},
+            #      {professorlist[3], professorlist[11], professorlist[21], professorlist[20]}, None, None),
             ]
     print(data, len(data))
     return batchlist, professorlist, courselist, data
@@ -365,7 +370,7 @@ def main():
     for _ in range(POPULATION_SIZE):
         gnome = Timetable.create_genome(data)
         population.append(Timetable(gnome))
-    print(population, len(population))
+    #print(population, len(population))
 
     while not terminate:
 
