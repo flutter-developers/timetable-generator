@@ -155,12 +155,12 @@ class Timetable:
         return dic
 
     # Removing Pseudo Data and Saving "data" into Data Object
-    def save(self):
-        for gene in self.chromosome:
-            if gene.data.is_pseudo:
+#     def save(self):
+#         for gene in self.chromosome:
+#             if gene.data.is_pseudo:
 
 
-            gene.data.slots.append((gene.day, gene.time))
+#             gene.data.slots.append((gene.day, gene.time))
 
 
     def swap(self, batch, first, second):
@@ -293,7 +293,7 @@ def scheduler():
         # Termination
         if population[0].collisions == 0:
             population[0].print_test()
-            Timetable.save(population[0])
+            #Timetable.save(population[0])
             a, b, c, d = map(int, input().split())
             # Static Swap Function call in First Batch
             population[0].swap(batch_list[0], (a, b), (c, d))
