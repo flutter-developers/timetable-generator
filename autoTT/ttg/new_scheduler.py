@@ -2,15 +2,15 @@ import random
 from tkinter import *
 from tkinter import ttk
 
-from model import *
+from ttg.model import *
 
-import timetable
+import ttg.timetable
 
-from open_electives import open_elective
-from labs import lab
-from lectures import lectures
-from labs_room_choices import labs_room_choices
-from professors import prof
+# from open_electives import open_elective
+# from labs import lab
+# from lectures import lectures
+# from labs_room_choices import labs_room_choices
+# from professors import prof
 
 POPULATION_SIZE = 25
 
@@ -44,34 +44,43 @@ def tk_print(d):
         root.mainloop()
 
 
-def initiation():
-    course_list = []
-    professor_list = []
-    batch_list = []
+def initiation(course_list,professor_list,batch_list):
+    # course_list = []
+    # professor_list = []
+    # batch_list = []
 
-    for _ in range(0, len(open_elective), 3):
-        c = Course()
-        c.create_lecture(open_elective[_], open_elective[_ + 1], open_elective[_ + 2], 2, 2)
-        course_list.append(c)
-    for _ in range(0, len(lectures), 3):
-        c = Course()
-        c.create_lecture(lectures[_], lectures[_ + 1], lectures[_ + 2], 1, 4)
-        course_list.append(c)
-    for _ in range(0, len(lab), 3):
-        c = Course()
-        c.create_lab_course(lab[_], lab[_ + 1], lab[_ + 2], labs_room_choices[_ // 3])
-        course_list.append(c)
-    # print(course_list, len(course_list))
+    # for _ in range(0, len(open_elective), 3):
+    #     c = Course()
+    #     c.create_lecture(open_elective[_], open_elective[_ + 1], open_elective[_ + 2], 2, 2)
+    #     course_list.append(c)
 
-    for i, _ in enumerate(prof):
-        t = Professor('CSE', i, _)
-        professor_list.append(t)
-    # print(professor_list, len(professor_list))
+    # for _ in range(0, len(lectures), 3):
+    #     c = Course()
+    #     c.create_lecture(lectures[_], lectures[_ + 1], lectures[_ + 2], 1, 4)
+    #     course_list.append(c)
 
-    b_room = ['R1', 'R2', 'R3', 'R4']
-    for _ in range(4):
-        t = Batch('CSE', 3, _ + 1, b_room[_], False)
-        batch_list.append(t)
+    # for _ in range(0, len(lab), 3):
+    #     c = Course()
+    #     c.create_lab_course(lab[_], lab[_ + 1], lab[_ + 2], labs_room_choices[_ // 3])
+    #     course_list.append(c)
+        
+    # # print(course_list, len(course_list))
+
+    # for i, _ in enumerate(prof):
+    #     t = Professor('CSE', i, _)
+    #     professor_list.append(t)
+    # # print(professor_list, len(professor_list))
+
+    # b_room = ['R1', 'R2', 'R3', 'R4']
+    # for _ in range(4):
+    #     t = Batch('CSE', 3, _ + 1, b_room[_], False)
+    #     batch_list.append(t)
+
+    # b_room = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8',
+	# 	'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15', 'R16']
+    # for _ in range(16):
+    #     t = Batch('CSE', 4, _ + 1, b_room[_], False)
+    #     batch_list.append(t)
     # print(batch_list, len(batch_list))
 
     data = [
@@ -110,8 +119,8 @@ def initiation():
     return batch_list, professor_list, course_list, data
 
 
-def scheduler():
-    batch_list, professor_list, course_list, data = initiation()
+def scheduler(course_list,professor_list,batch_list):
+    batch_list, professor_list, course_list, data = initiation(course_list,professor_list,batch_list)
     # print(batch_list, professor_list, course_list, data)
 
     # Start
@@ -133,7 +142,8 @@ def scheduler():
             d = population[0].print_test()
             # Timetable.save(population[0])
             # population[0].tk_print(d)
-            tk_print(d)
+            # tk_print(d)
+            return d
             ch = input('Enter Swap Choice: ')
             while ch == 'y':
                 print('Enter Coordinates: ')
@@ -143,7 +153,8 @@ def scheduler():
                 d = population[0].print_test()
                 print('Printing...')
                 # population[0].tk_print(d)
-                tk_print(d)
+                # tk_print(d)
+                return d
                 ch = input('Do you want to Continue Swapping')
             terminate = True
             # TODO: Start Here Data Updating in Data Objects

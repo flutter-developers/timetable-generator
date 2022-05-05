@@ -1,35 +1,21 @@
-class Professor:
-    def __init__(self, department, professor_id, professor_name):
-        self.professor_id = professor_id
-        self.professor_name = professor_name
-        self.department = department
+from ttg import db, login_manager
+
+class Professor(db.Model):
+    __table_args__ = {'extend_existing': True}
+    professor_id = db.Column(db.String(20),primary_key=True)
+    professor_name = db.Column(db.String(50),unique=True,nullable=False)
+    department = db.Column(db.String(7),nullable=False)
 
 
-class Course:
-
-    def __init__(self):
-        self.course_id = None
-        self.course_name = None
-        self.course_short_form = None
-        self.duration = None
-        self.frequency = None
-        self.preferred_rooms = None
-        self.is_lab = None
-
-    def create_lecture(self, course_id, course_name, course_short_form, duration, frequency):
-        self.course_id = course_id
-        self.course_name = course_name
-        self.course_short_form = course_short_form
-        self.duration = duration
-        self.frequency = frequency
-        self.is_lab = False
-
-    def create_lab_course(self, course_id, course_name, course_short_form, preferred_rooms):
-        self.course_id = course_id
-        self.course_name = course_name
-        self.course_short_form = course_short_form
-        self.preferred_rooms = preferred_rooms
-        self.is_lab = True
+class Course(db.Model):
+    __table_args__ = {'extend_existing': True}
+    course_id = db.Column(db.String(20),primary_key=True)
+    course_name = db.Column(db.String(50),unique=True,nullable=False)
+    course_short_form = db.Column(db.String(10),unique=True,nullable=False)
+    course_type = db.Column(db.String(10),nullable=False)
+    duration = db.Column(db.Integer,nullable=True)
+    frequency = db.Column(db.Integer,nullable=True)
+    preferred_rooms = db.Column(db.String(20),nullable=True)   
 
     def __repr__(self):
         return str(self.course_short_form)
