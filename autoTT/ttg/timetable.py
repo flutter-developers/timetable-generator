@@ -51,7 +51,12 @@ class Timetable:
         if _.is_lab:
             _.room = set()
             for c in _.course:
-                _.room.add(random.choice(c.preferred_rooms))
+                print('\n#################################################################')
+                print('course id === ', c.course_id)
+                print('course room === ', c.preferred_rooms)
+                print('#################################################################\n')
+                preferred_rooms = c.preferred_rooms.split(", ")
+                _.room.add(random.choice(preferred_rooms))
             if _.is_jnr:
                 gene = Gene(_, random.choice(day), random.choice([0, 3]))
             else:

@@ -6,6 +6,12 @@ from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 import os
 
+@app.route('/')
+def home():
+	return {
+	'status': 'SUCCESS'
+	}
+
 @login_required
 @app.route('/add_course',methods=['GET','POST'])
 def add_course():
@@ -149,25 +155,26 @@ def generate_timetable():
 
 		b_room = ['R1', 'R2', 'R3', 'R4']
 		for _ in range(4):
-			t = Batch('CSE', 3, _ + 1, b_room[_], False)
+			t = Batch('CSE', 4, _ + 1, b_room[_], False)
 			batch_list.append(t)
 		print('\n#################################################################')
 		print('batch_list === ',batch_list)
 		print('#################################################################\n')
 
-		course_list = Course.query().all()
+		course_list = Course.query.all()
 		print('\n#################################################################')
 		print('course_list === ', course_list)
 		print('#################################################################\n')
 
-		faculty_list = p=Professor.query().all()
+		faculty_list = p=Professor.query.all()
 		print('\n#################################################################')
 		print('faculty_list === ', faculty_list)
 		print('#################################################################\n')
 
+		timetable = {}
 		timetable = scheduler(course_list,faculty_list,batch_list)
 		print('\n#################################################################')
-		print(timetable)
+		print("TIMETABLE === \n",timetable)
 		print('#################################################################\n')
 		
 

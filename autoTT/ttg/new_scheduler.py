@@ -4,7 +4,7 @@ from tkinter import ttk
 
 from ttg.model import *
 
-import ttg.timetable
+import ttg.timetable as timetable
 
 # from open_electives import open_elective
 # from labs import lab
@@ -83,6 +83,7 @@ def initiation(course_list,professor_list,batch_list):
     #     batch_list.append(t)
     # print(batch_list, len(batch_list))
 
+
     data = [
         Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
         Data().create_lecture_data({batch_list[0]}, {course_list[1]}, {professor_list[7]}),
@@ -122,6 +123,9 @@ def initiation(course_list,professor_list,batch_list):
 def scheduler(course_list,professor_list,batch_list):
     batch_list, professor_list, course_list, data = initiation(course_list,professor_list,batch_list)
     # print(batch_list, professor_list, course_list, data)
+    print('\n#################################################################')
+    print('data === ', data)
+    print('#################################################################\n')
 
     # Start
     generation = 1
