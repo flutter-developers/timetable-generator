@@ -14,34 +14,34 @@ import ttg.timetable as timetable
 
 POPULATION_SIZE = 25
 
-def tk_print(d):
-        class Table:
+# def tk_print(d):
+#         class Table:
 
-            def __init__(self, root, temp):
-                total_rows = len(temp)
-                total_columns = len(temp[0])
+#             def __init__(self, root, temp):
+#                 total_rows = len(temp)
+#                 total_columns = len(temp[0])
 
-                # code for creating table
-                for i in range(total_rows):
-                    for j in range(total_columns):
-                        # self.e = Entry(root, fg='black',width=20,
-                        #                font=('Arial', 16, 'bold'))
-                        e = Text(root, fg='white',bg = 'black',height=2, width=21,font=('Arial', 16, 'bold'))
-                        e.grid(row=i, column=j)
-                        e.insert(END, temp[i][j])
+#                 # code for creating table
+#                 for i in range(total_rows):
+#                     for j in range(total_columns):
+#                         # self.e = Entry(root, fg='black',width=20,
+#                         #                font=('Arial', 16, 'bold'))
+#                         e = Text(root, fg='white',bg = 'black',height=2, width=21,font=('Arial', 16, 'bold'))
+#                         e.grid(row=i, column=j)
+#                         e.insert(END, temp[i][j])
 
-                    # take the data
+#                     # take the data
 
-        # create root window
-        root = Tk()
-        root.title("Tab Widget")
-        tabControl = ttk.Notebook(root)
-        for i, _ in enumerate(d):
-            title = ttk.Frame(tabControl)
-            tabControl.add(title, text=str(_))
-            t = Table(title, d[_])
-        tabControl.pack(expand=1, fill="both")
-        root.mainloop()
+#         # create root window
+#         root = Tk()
+#         root.title("Tab Widget")
+#         tabControl = ttk.Notebook(root)
+#         for i, _ in enumerate(d):
+#             title = ttk.Frame(tabControl)
+#             tabControl.add(title, text=str(_))
+#             t = Table(title, d[_])
+#         tabControl.pack(expand=1, fill="both")
+#         root.mainloop()
 
 
 def initiation(course_list,professor_list,batch_list):
@@ -83,40 +83,90 @@ def initiation(course_list,professor_list,batch_list):
     #     batch_list.append(t)
     # print(batch_list, len(batch_list))
 
+    data = []
 
-    data = [
-        Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
-        Data().create_lecture_data({batch_list[0]}, {course_list[1]}, {professor_list[7]}),
-        Data().create_lecture_data({batch_list[0]}, {course_list[2]}, {professor_list[14]}),
-        Data().create_lecture_data({batch_list[0]}, {course_list[3]}, {professor_list[16]}),
-        Data().create_lecture_data({batch_list[0]}, {course_list[4]}, {professor_list[4]}),
-        Data().create_lecture_data({batch_list[0]}, {course_list[5]}, {professor_list[3]}),
-        Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[7]},
-                               {professor_list[14], professor_list[15], professor_list[3], professor_list[11]}, 3,
-                               1),
-        Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[8]},
-                               {professor_list[14], professor_list[15], professor_list[21], professor_list[20]}, 3, 1),
-        Data().create_lab_data({batch_list[0]}, {course_list[7], course_list[8]},
-                               {professor_list[3], professor_list[11], professor_list[21], professor_list[20]}, 3, 1),
-        Data().create_pseudo_data({batch_list[0]}, 1, 3),
+    # Create Compound data first
+    for c in course_list:
+        course = set()
+        course.add(c)
+        if c.course_type == "elective":
+            batch = set()
+            for b in batch_list:
+                batch.add(b)
+            data.append(Data().create_compound_data(batch, course))
 
-        # Data().create_compound_data({batch_list[1], batch_list[1]}, {course_list[0]}),
-        Data().create_lecture_data({batch_list[1]}, {course_list[1]}, {professor_list[13]}),
-        Data().create_lecture_data({batch_list[1]}, {course_list[2]}, {professor_list[10]}),
-        Data().create_lecture_data({batch_list[1]}, {course_list[3]}, {professor_list[9]}),
-        Data().create_lecture_data({batch_list[1]}, {course_list[4]}, {professor_list[8]}),
-        Data().create_lecture_data({batch_list[1]}, {course_list[5]}, {professor_list[23]}),
-        Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[7]},
-                               {professor_list[10], professor_list[25], professor_list[23], professor_list[8]}, 3,
-                               1),
-        Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[8]},
-                               {professor_list[10], professor_list[25], professor_list[12], professor_list[17]}, 3, 1),
-        Data().create_lab_data({batch_list[1]}, {course_list[7], course_list[8]},
-                               {professor_list[23], professor_list[8], professor_list[12], professor_list[17]}, 3, 1),
-        Data().create_pseudo_data({batch_list[1]}, 1, 3),
+    # Create Lecture Data 
+    for b in batch_list:
+        batch = set()
+        batch.add(b)
+        for c in course_list:
+            course = set()
+            course.add(c)
+            for p in professor_list:
+                prof = set()
+                prof.add(p)
+                if c.course_id in p.prof_courses.split(", ") and c.course_type=="lecture":
+                    data.append(Data().create_lecture_data(batch, course, prof))
+                    break
 
-    ]
-    # print(data, len(data))
+    # create lab data 
+    for b in batch_list:
+        batch = set()
+        batch.add(b)
+        courses = set()
+        for c in courses:
+            if c.course_type == "lab":
+                courses.add(c)
+        prof = set()
+        for p in professor_list:
+            for pc in p.prof_courses.split(", "):
+                if pc in courses:
+                    prof.add(p)
+        data.append(Data().create_lab_data(batch, courses, prof, 3, 1))
+
+    # create pseudo data - for empty slots
+    for b in batch_list:
+        batch = set()
+        batch.add(b)
+        data.append(Data().create_pseudo_data(batch,1,3))
+
+
+
+
+
+    # data = [
+    #     Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
+    #     Data().create_lecture_data({batch_list[0]}, {course_list[1]}, {professor_list[7]}),
+    #     Data().create_lecture_data({batch_list[0]}, {course_list[2]}, {professor_list[14]}),
+    #     Data().create_lecture_data({batch_list[0]}, {course_list[3]}, {professor_list[16]}),
+    #     Data().create_lecture_data({batch_list[0]}, {course_list[4]}, {professor_list[4]}),
+    #     Data().create_lecture_data({batch_list[0]}, {course_list[5]}, {professor_list[3]}),
+    #     Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[7]},
+    #                            {professor_list[14], professor_list[15], professor_list[3], professor_list[11]}, 3,
+    #                            1),
+    #     Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[8]},
+    #                            {professor_list[14], professor_list[15], professor_list[21], professor_list[20]}, 3, 1),
+    #     Data().create_lab_data({batch_list[0]}, {course_list[7], course_list[8]},
+    #                            {professor_list[3], professor_list[11], professor_list[21], professor_list[20]}, 3, 1),
+    #     Data().create_pseudo_data({batch_list[0]}, 1, 3),
+
+    #     # Data().create_compound_data({batch_list[1], batch_list[1]}, {course_list[0]}),
+    #     Data().create_lecture_data({batch_list[1]}, {course_list[1]}, {professor_list[13]}),
+    #     Data().create_lecture_data({batch_list[1]}, {course_list[2]}, {professor_list[10]}),
+    #     Data().create_lecture_data({batch_list[1]}, {course_list[3]}, {professor_list[9]}),
+    #     Data().create_lecture_data({batch_list[1]}, {course_list[4]}, {professor_list[8]}),
+    #     Data().create_lecture_data({batch_list[1]}, {course_list[5]}, {professor_list[23]}),
+    #     Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[7]},
+    #                            {professor_list[10], professor_list[25], professor_list[23], professor_list[8]}, 3,
+    #                            1),
+    #     Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[8]},
+    #                            {professor_list[10], professor_list[25], professor_list[12], professor_list[17]}, 3, 1),
+    #     Data().create_lab_data({batch_list[1]}, {course_list[7], course_list[8]},
+    #                            {professor_list[23], professor_list[8], professor_list[12], professor_list[17]}, 3, 1),
+    #     Data().create_pseudo_data({batch_list[1]}, 1, 3),
+    # ]
+    # # print(data, len(data))
+
     return batch_list, professor_list, course_list, data
 
 
@@ -184,4 +234,4 @@ def scheduler(course_list,professor_list,batch_list):
 
         if generation > 4000:
             print("Re-Schedule")
-            scheduler()
+            scheduler(course_list,professor_list,batch_list)

@@ -1,14 +1,10 @@
-course_id,course_name,course_short_form,duration,frequency,preferred_rooms,is_lab
-18PC1CS03,Software Engineering,SE,1,4,,0
-18PC1IT03,Java Programming,JP,1,4,,0
-18PC1IT04,Formal Languages and Automata Theory,FLAT,1,4,,0
-18PC1CS04,Design and Analysis of Algorithms,DAA,1,4,,0
-18PC1CS05,Database Management Systems,DBMS,1,4,,0
-18PC1CS10,Big Data Analytics,BDA,1,4,,0
-18PE1IT13,Network Security,NS,2,2,,0
-18PE1CS08,Information Security Management,ISM,2,2,,0
-18PE1CS10,Neural Networks and Deep Learning,NNDL,2,2,,0
-18PE1EC08,Internet of Things,IOT,2,2,,0
-18PC2IT02,Java Programming Laboratory,JP LAB,,,,1
-18PC2CS02,Database Management Systems Laboratory,DBMS LAB,,,,
-18PC2IT03,IT Workshop,ITWS LAB,,,,
+course_id,course_name,course_short_form,course_type,duration,frequency,preferred_rooms
+18PC1CS10,Big Data Analytics,BDA,lecture,1,4,
+18HS1MG02,Principles of Management,PMOB,lecture,1,4,
+18PE1IT13,Network Security,NS,elective,2,2,
+18PE1CS10,Neural Networks and Deep Learning,NNDL,elective,2,2,
+18PC2CS06,Big Data Analytics Laboratory ,BDA Lab,lab,3,2,"A110, A107"
+18PE1CS08,Information Security Management,ISM,elective,2,2,
+18PE1EC08,Internet of Things,IOT,elective,2,2,
+18PW4CS05,Major Project Phase - I ,MAJOR,lab,3,2,A110
+18PW4CS04,Mini-Project ,MINI,lab,3,2,A107

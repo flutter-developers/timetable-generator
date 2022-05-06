@@ -5,6 +5,9 @@ from ttg.new_scheduler import scheduler
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 import os
+from tkinter import *
+from tkinter import ttk
+
 
 @app.route('/')
 def home():
@@ -91,7 +94,8 @@ def add_faculty():
 		{
 			professor_id: 1,
 			professor_name: 'ABC DEF',
-			department: 'CSE'
+			department: 'CSE',
+			prof_courses: 'c1, c2, c3'
 		}
 		'''		
 		# check if already in DB
@@ -142,6 +146,36 @@ def view_faculty():
 
 ###################################################################
 
+def tk_print(d):
+        class Table:
+
+            def __init__(self, root, temp):
+                total_rows = len(temp)
+                total_columns = len(temp[0])
+
+                # code for creating table
+                for i in range(total_rows):
+                    for j in range(total_columns):
+                        # self.e = Entry(root, fg='black',width=20,
+                        #                font=('Arial', 16, 'bold'))
+                        e = Text(root, fg='white',bg = 'black',height=2, width=21,font=('Arial', 16, 'bold'))
+                        e.grid(row=i, column=j)
+                        e.insert(END, temp[i][j])
+
+                    # take the data
+
+        # create root window
+        root = Tk()
+        root.title("Tab Widget")
+        tabControl = ttk.Notebook(root)
+        for i, _ in enumerate(d):
+            title = ttk.Frame(tabControl)
+            tabControl.add(title, text=str(_))
+            t = Table(title, d[_])
+        tabControl.pack(expand=1, fill="both")
+        root.mainloop()
+
+
 @login_required
 @app.route('/generate_timetable',methods=['GET'])
 def generate_timetable():
@@ -176,5 +210,6 @@ def generate_timetable():
 		print('\n#################################################################')
 		print("TIMETABLE === \n",timetable)
 		print('#################################################################\n')
+		tk_print(timetable)
 		
 

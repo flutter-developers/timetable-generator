@@ -1,10 +1,12 @@
 from ttg import db, login_manager
 
+
 class Professor(db.Model):
     __table_args__ = {'extend_existing': True}
     professor_id = db.Column(db.String(20),primary_key=True)
     professor_name = db.Column(db.String(50),unique=True,nullable=False)
     department = db.Column(db.String(7),nullable=False)
+    prof_courses = db.Column(db.String(100),nullable=False)
 
 
 class Course(db.Model):
